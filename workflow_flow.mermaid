@@ -1,0 +1,47 @@
+flowchart TD
+    START(["🟢 Start: User opens app"]) --> SELECT
+
+    SELECT["Select exercise<br/>squat, push-up, plank, lunge, burpee"] --> PERM
+    PERM["Grant camera permission<br/>& start sandboxed stream"] --> PREVIEW
+    PREVIEW["Live camera preview begins"] --> POSE
+
+    POSE["🤖 Extract pose keypoints<br/>per frame, in-memory"] --> EVAL
+    EVAL["Evaluate joint angles<br/>vs. exercise rules"] --> REPDONE
+
+    REPDONE{"Rep cycle<br/>completed?"}
+    REPDONE -->|yes| INCREMENT["Increment rep counter<br/>+ update live display"]
+    REPDONE -->|no| FORMOK
+    INCREMENT --> FORMOK
+
+    FORMOK{"Form within<br/>threshold?"}
+    FORMOK -->|no| TIP["Show real-time<br/>form correction tip"]
+    FORMOK -->|yes| DISCARD
+    TIP --> DISCARD
+
+    DISCARD["🔒 Discard raw frame<br/>never stored or sent"] --> SETDONE
+
+    SETDONE{"Set / session<br/>ended by user?"}
+    SETDONE -->|"no — continue loop"| POSE
+    SETDONE -->|yes| SAVE
+
+    SAVE["💾 Save session data to<br/>Encrypted Local DB<br/>reps, duration, form flags"] --> GOAL
+    GOAL["Update weekly<br/>goal progress"] --> DASH
+    DASH["📊 Render progress dashboard<br/>+ workout history"] --> END
+
+    END(["🔵 End: Session summary<br/>shown to user"])
+
+    classDef startEnd fill:#4A90D9,stroke:#2C5F8A,color:#fff
+    classDef capture fill:#F5A623,stroke:#B87A19,color:#fff
+    classDef ai fill:#7B61FF,stroke:#5A46C7,color:#fff
+    classDef decision fill:#E9A23B,stroke:#B87A19,color:#fff
+    classDef feedback fill:#17A2B8,stroke:#117A8B,color:#fff
+    classDef security fill:#E94B4B,stroke:#B93838,color:#fff
+    classDef storage fill:#50C878,stroke:#379157,color:#fff
+
+    class START,END startEnd
+    class SELECT,PERM,PREVIEW capture
+    class POSE,EVAL ai
+    class REPDONE,FORMOK,SETDONE decision
+    class INCREMENT,TIP feedback
+    class DISCARD security
+    class SAVE,GOAL,DASH storage
