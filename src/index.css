@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body, #root {
+    height: 100%;
+  }
+  body {
+    background: #EEF0FA;
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #C9CCE4 transparent;
+  }
+  /* WebKit fallback for browsers without scrollbar-width/scrollbar-color
+     support (Safari, Chrome < 121, Samsung Internet). */
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: #C9CCE4;
+    border-radius: 9999px;
+  }
+  :focus-visible {
+    outline: 2px solid #5B4FE9;
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+@layer components {
+  .odometer {
+    font-family: 'JetBrains Mono', monospace;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+  .card {
+    @apply bg-surface border border-border rounded-xl3 shadow-card;
+  }
+  .glass {
+    @apply bg-white/15 border border-white/30 backdrop-blur-xl;
+  }
+  .glass-card {
+    @apply bg-white/90 backdrop-blur-xl border border-white/60 rounded-xl3 shadow-soft;
+  }
+  .btn-primary {
+    @apply bg-primary-gradient text-white font-display font-semibold rounded-2xl px-5 py-3.5 transition
+           shadow-glow hover:brightness-105 active:scale-[0.98] disabled:opacity-40 disabled:pointer-events-none disabled:shadow-none;
+  }
+  .btn-secondary {
+    @apply bg-surface2 text-ink font-display font-medium rounded-2xl px-5 py-3.5 border border-border transition
+           hover:border-primary/40 active:scale-[0.98] disabled:opacity-40 disabled:pointer-events-none;
+  }
+  .btn-ghost {
+    @apply text-mist font-medium transition hover:text-ink;
+  }
+  .input {
+    @apply bg-surface2 border border-border rounded-2xl px-4 py-3 text-ink placeholder:text-mist
+           focus:border-primary focus:bg-white transition outline-none w-full text-[15px];
+  }
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium;
+  }
+  .tab-pill {
+    @apply flex-1 text-center rounded-xl py-2.5 text-sm font-display font-semibold transition;
+  }
+}
